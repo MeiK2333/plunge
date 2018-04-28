@@ -1,5 +1,5 @@
 plunge: plunge.o limit.o
-	gcc -o plunge plunge.o limit.o
+	gcc -o plunge plunge.o limit.o -Wall -O2
 
 plunge.o: plunge.c limit.h
 	gcc -c plunge.c
