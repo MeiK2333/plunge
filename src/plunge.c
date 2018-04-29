@@ -217,6 +217,7 @@ void display_rusage(const struct rusage *_rusage) {
     fprintf(stderr, "ru_utime.tv_usec: %ld\n", (long) _rusage->ru_utime.tv_usec);
     fprintf(stderr, "ru_stime.tv_sec:  %ld\n", _rusage->ru_stime.tv_sec);
     fprintf(stderr, "ru_stime.tv_usec: %ld\n", (long) _rusage->ru_stime.tv_usec);
+    fprintf(stderr, "ru_maxrss:        %ld\n", _rusage->ru_maxrss);
     fprintf(stderr, "ru_ixrss:         %ld\n", _rusage->ru_ixrss);
     fprintf(stderr, "ru_idrss:         %ld\n", _rusage->ru_idrss);
     fprintf(stderr, "ru_isrss:         %ld\n", _rusage->ru_isrss);

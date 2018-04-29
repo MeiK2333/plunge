@@ -6,6 +6,14 @@
 cd src && make
 ```
 
+
+## Test
+
+```shell
+cd tests && python3 -m unittest -v
+```
+
+
 ## Usage
 
 ```shell
