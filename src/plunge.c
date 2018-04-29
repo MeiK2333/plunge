@@ -30,8 +30,21 @@ void display_usage();
 /*
  * Display program config
  */
-void display_config(struct config);
+void display_config(const struct config *);
 
+/*
+ * Display program result
+ */
+void display_result(const struct result *);
+
+/*
+ * Display rusage
+ */
+void display_rusage(const struct rusage *);
+
+/*
+ * Validate the validity of parameters
+ */
 void assert_str_to(const char *str_to) {
     if (str_to[0] != 0) {
         display_usage();
@@ -54,6 +67,7 @@ int main(int argc, char *argv[]) {
     _config.args[0] = NULL;
     _config.run_file_name = _config.in_file_name = _config.out_file_name = _config.err_file_name = NULL;
 
+    /* Parse command parameters */
     while ((opt = getopt_long(argc, argv, opt_string, long_opts, &long_index)) != -1) {
         switch (opt) {
             case 'r':
@@ -119,15 +133,26 @@ int main(int argc, char *argv[]) {
         display_usage();
     }
 
-    _config.args[arg_cnt] = NULL;
+    _config.args[arg_cnt++] = NULL;
+    /* Adjust the parameter position and use the program name as the first parameter */
+    for (; arg_cnt > 0; arg_cnt--) {
+        _config.args[arg_cnt] = _config.args[arg_cnt - 1];
+    }
+    _config.args[0] = _config.run_file_name;
 
     if (_config.show) {
-        display_config(_config);
+        display_config(&_config);
     }
 
     struct result _result;
 
     run(&_config, &_result);
+
+    display_result(&_result);
+
+    if (_config.show) {
+        display_rusage(&_result._rusage);
+    }
 
     return EXIT_SUCCESS;
 }
@@ -155,22 +180,54 @@ void display_usage() {
     exit(EXIT_FAILURE);
 }
 
-void display_config(const struct config _config) {
-    fprintf(stderr, "run_file_name:   %s\n", _config.run_file_name);
+void display_config(const struct config *_config) {
+    fprintf(stderr, "run_file_name:   %s\n", _config->run_file_name);
     fprintf(stderr, "args:            ");
     fprintf(stderr, "[");
-    for (int i = 0; _config.args[i] != NULL; i++) {
-        fprintf(stderr, " '%s',", _config.args[i]);
+    for (int i = 0; _config->args[i] != NULL; i++) {
+        fprintf(stderr, " '%s',", _config->args[i]);
     }
     fprintf(stderr, "]\n");
-    fprintf(stderr, "in_file_name:    %s\n", _config.in_file_name);
-    fprintf(stderr, "out_file_name:   %s\n", _config.out_file_name);
-    fprintf(stderr, "err_file_name:   %s\n", _config.err_file_name);
-    fprintf(stderr, "max_cpu_time:    %ld\n", _config.max_cpu_time);
-    fprintf(stderr, "max_real_time:   %ld\n", _config.max_real_time);
-    fprintf(stderr, "max_memory:      %ld\n", _config.max_memory);
-    fprintf(stderr, "max_stack:       %ld\n", _config.max_stack);
-    fprintf(stderr, "max_output_size: %ld\n", _config.max_output_size);
-    fprintf(stderr, "gid:             %u\n", _config.gid);
-    fprintf(stderr, "uid:             %u\n", _config.uid);
+    fprintf(stderr, "in_file_name:    %s\n", _config->in_file_name);
+    fprintf(stderr, "out_file_name:   %s\n", _config->out_file_name);
+    fprintf(stderr, "err_file_name:   %s\n", _config->err_file_name);
+    fprintf(stderr, "max_cpu_time:    %ld\n", _config->max_cpu_time);
+    fprintf(stderr, "max_real_time:   %ld\n", _config->max_real_time);
+    fprintf(stderr, "max_memory:      %ld\n", _config->max_memory);
+    fprintf(stderr, "max_stack:       %ld\n", _config->max_stack);
+    fprintf(stderr, "max_output_size: %ld\n", _config->max_output_size);
+    fprintf(stderr, "gid:             %u\n", _config->gid);
+    fprintf(stderr, "uid:             %u\n", _config->uid);
+}
+
+void display_result(const struct result *_result) {
+    fprintf(stderr, "\n");
+    fprintf(stderr, "cpu_time:  %ld\n", _result->cpu_time);
+    fprintf(stderr, "real_time: %ld\n", _result->real_time);
+    fprintf(stderr, "memory:    %ld\n", _result->memory);
+    fprintf(stderr, "exit_code: %d\n", _result->exit_code);
+    fprintf(stderr, "signal:    %d\n", _result->signal);
+    fprintf(stderr, "status:    %d\n", _result->status);
+
+}
+
+void display_rusage(const struct rusage *_rusage) {
+    fprintf(stderr, "\n");
+    fprintf(stderr, "ru_utime.tv_sec:  %ld\n", _rusage->ru_utime.tv_sec);
+    fprintf(stderr, "ru_utime.tv_usec: %ld\n", (long) _rusage->ru_utime.tv_usec);
+    fprintf(stderr, "ru_stime.tv_sec:  %ld\n", _rusage->ru_stime.tv_sec);
+    fprintf(stderr, "ru_stime.tv_usec: %ld\n", (long) _rusage->ru_stime.tv_usec);
+    fprintf(stderr, "ru_ixrss:         %ld\n", _rusage->ru_ixrss);
+    fprintf(stderr, "ru_idrss:         %ld\n", _rusage->ru_idrss);
+    fprintf(stderr, "ru_isrss:         %ld\n", _rusage->ru_isrss);
+    fprintf(stderr, "ru_minflt:        %ld\n", _rusage->ru_minflt);
+    fprintf(stderr, "ru_majflt:        %ld\n", _rusage->ru_majflt);
+    fprintf(stderr, "ru_nswap:         %ld\n", _rusage->ru_nswap);
+    fprintf(stderr, "ru_inblock:       %ld\n", _rusage->ru_inblock);
+    fprintf(stderr, "ru_oublock:       %ld\n", _rusage->ru_oublock);
+    fprintf(stderr, "ru_msgsnd:        %ld\n", _rusage->ru_msgsnd);
+    fprintf(stderr, "ru_msgrcv:        %ld\n", _rusage->ru_msgrcv);
+    fprintf(stderr, "ru_nsignals:      %ld\n", _rusage->ru_nsignals);
+    fprintf(stderr, "ru_nvcsw:         %ld\n", _rusage->ru_nvcsw);
+    fprintf(stderr, "ru_nivcsw:        %ld\n", _rusage->ru_nivcsw);
 }
