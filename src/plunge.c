@@ -184,31 +184,31 @@ void display_config(const struct config *_config) {
     fprintf(stderr, "run_file_name:   %s\n", _config->run_file_name);
     fprintf(stderr, "args:            ");
     fprintf(stderr, "[");
-    for (int i = 0; _config->args[i] != NULL; i++) {
+    int i;
+    for (i = 0; _config->args[i] != NULL; i++) {
         fprintf(stderr, " '%s',", _config->args[i]);
     }
     fprintf(stderr, "]\n");
     fprintf(stderr, "in_file_name:    %s\n", _config->in_file_name);
     fprintf(stderr, "out_file_name:   %s\n", _config->out_file_name);
     fprintf(stderr, "err_file_name:   %s\n", _config->err_file_name);
-    fprintf(stderr, "max_cpu_time:    %ld\n", _config->max_cpu_time);
-    fprintf(stderr, "max_real_time:   %ld\n", _config->max_real_time);
-    fprintf(stderr, "max_memory:      %ld\n", _config->max_memory);
-    fprintf(stderr, "max_stack:       %ld\n", _config->max_stack);
-    fprintf(stderr, "max_output_size: %ld\n", _config->max_output_size);
+    fprintf(stderr, "max_cpu_time:    %ld ms\n", _config->max_cpu_time);
+    fprintf(stderr, "max_real_time:   %ld ms\n", _config->max_real_time);
+    fprintf(stderr, "max_memory:      %ld byte\n", _config->max_memory);
+    fprintf(stderr, "max_stack:       %ld byte\n", _config->max_stack);
+    fprintf(stderr, "max_output_size: %ld byte\n", _config->max_output_size);
     fprintf(stderr, "gid:             %u\n", _config->gid);
     fprintf(stderr, "uid:             %u\n", _config->uid);
 }
 
 void display_result(const struct result *_result) {
     fprintf(stderr, "\n");
-    fprintf(stderr, "cpu_time:  %ld\n", _result->cpu_time);
-    fprintf(stderr, "real_time: %ld\n", _result->real_time);
-    fprintf(stderr, "memory:    %ld\n", _result->memory);
+    fprintf(stderr, "cpu_time:  %ld ms\n", _result->cpu_time);
+    fprintf(stderr, "real_time: %ld ms\n", _result->real_time);
+    fprintf(stderr, "memory:    %ld byte\n", _result->memory);
     fprintf(stderr, "exit_code: %d\n", _result->exit_code);
     fprintf(stderr, "signal:    %d\n", _result->signal);
     fprintf(stderr, "status:    %d\n", _result->status);
-
 }
 
 void display_rusage(const struct rusage *_rusage) {
