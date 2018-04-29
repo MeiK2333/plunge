@@ -146,9 +146,9 @@ void display_usage() {
             "  -m, --max_memory         integer     Maximum memory available for program execution (byte)\n"
             "  -u, --uid                integer     User id when the program runs\n"
             "  -g, --gid                integer     Group id when the program runs\n"
+            "  -a, --args               string      Program running arguments, Can be set multiple times\n"
             "      --max_stack          integer     Maximum stack space available for program execution (byte)\n"
             "      --max_output_size    integer     The maximum file size a program can create (byte)\n"
-            "      --args               string      Program running arguments, Can be set multiple times\n"
             "      --show                           Print specific restrictions\n"
             "\n";
     fprintf(stderr, "%s", usage);

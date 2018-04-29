@@ -10,4 +10,5 @@ cd src && make
 
 ```shell
 ./plunge -h
+./plunge -r ls -a ls -a -l
 ```
