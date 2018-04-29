@@ -61,9 +61,9 @@ int main(int argc, char *argv[]) {
     char *str_to;
 
     struct config _config;
-    _config.max_cpu_time = _config.max_real_time = _config.max_memory = _config.max_output_size = _config.max_stack = -1;
-    _config.uid = _config.gid = 0;
-    _config.memory_limit = _config.show = 0;
+    _config.max_cpu_time = _config.max_real_time = _config.max_memory = _config.max_output_size = _config.max_stack = UNLIMITED;
+    _config.uid = _config.gid = UNLIMITED;
+    _config.memory_limit = _config.show = UNLIMITED;
     _config.args[0] = NULL;
     _config.run_file_name = _config.in_file_name = _config.out_file_name = _config.err_file_name = NULL;
 

@@ -1,8 +1,12 @@
-#include <sys/time.h>
+#include <signal.h>
+
 #include <sys/wait.h>
 
 #include "run.h"
 
+/*
+ * Init result
+ */
 void init_result(struct result *_result) {
     _result->exit_code = _result->signal = _result->status = 0;
     _result->real_time = _result->cpu_time = _result->memory = 0;
@@ -26,6 +30,12 @@ void run(const struct config *_config, struct result *_result) {
         execvp(_config->run_file_name, _config->args);
         RUN_ERR_EXIT("exec failure!");
     } else if (pid > 0) {
+        /* Block the SIGALRM signal to prevent the parent process from being interrupted by the timer */
+        sigset_t set;
+        sigemptyset(&set);
+        sigaddset(&set, SIGALRM);
+        sigprocmask(SIG_SETMASK, &set, NULL);
+
         if (wait4(pid, &_result->status, WSTOPPED, &_result->_rusage) == -1) {
             RUN_ERR_EXIT("wait4 failure!");
         }

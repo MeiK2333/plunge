@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <sys/time.h>
 #include <sys/resource.h>
 
 #include "limit.h"
@@ -39,6 +40,8 @@ struct result {
     int status;
     int exit_code;
 };
+
+#define UNLIMITED 0
 
 #define RUN_ERR_EXIT(err_msg) {fprintf(stderr, "RUN_ERR_EXIT: " # err_msg "\n"); exit(EXIT_FAILURE);}
 
