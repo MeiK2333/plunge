@@ -3,7 +3,13 @@
 
 #include "run.h"
 
+void init_result(struct result *_result) {
+    _result->exit_code = _result->signal = _result->status = 0;
+    _result->real_time = _result->cpu_time = _result->memory = 0;
+}
+
 void run(const struct config *_config, struct result *_result) {
+    init_result(_result);
     set_limit(_config);
 
     struct timeval start, end;

@@ -35,15 +35,15 @@ total 96
 -rw-r--r--  1 meik  staff     97 Apr 29 11:06 Makefile
 -rw-r--r--  1 meik  staff     68 Apr 29 11:27 limit.c
 -rw-r--r--  1 meik  staff    144 Apr 29 11:28 limit.h
--rwxr-xr-x  1 meik  staff  13548 Apr 29 16:43 plunge
+-rwxr-xr-x  1 meik  staff  13604 Apr 29 16:53 plunge
 -rw-r--r--  1 meik  staff   9030 Apr 29 16:41 plunge.c
--rw-r--r--  1 meik  staff   1518 Apr 29 15:36 run.c
+-rw-r--r--  1 meik  staff   1720 Apr 29 16:53 run.c
 -rw-r--r--  1 meik  staff    843 Apr 29 14:31 run.h
 
 cpu_time:  3
-real_time: 77
-memory:    962560
+real_time: 46
+memory:    946176
 exit_code: 0
-signal:    248366368
+signal:    0
 status:    0
 ```
