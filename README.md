@@ -48,9 +48,9 @@ total 96
 -rw-r--r--  1 meik  staff   1720 Apr 29 16:53 run.c
 -rw-r--r--  1 meik  staff    843 Apr 29 14:31 run.h
 
-cpu_time:  3
-real_time: 46
-memory:    946176
+cpu_time:  2 ms
+real_time: 3 ms
+memory:    3300 byte
 exit_code: 0
 signal:    0
 status:    0
