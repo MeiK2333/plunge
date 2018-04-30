@@ -63,3 +63,39 @@ void set_limit(const struct config *_config) {
         }
     }
 }
+
+void set_stream(const struct config *_config) {
+
+    /* redirect in_file to stdin */
+    if (_config->in_file_name != NULL) {
+        FILE *in_file;
+        if ((in_file = fopen(_config->in_file_name, "r")) == NULL) {
+            STREAM_ERR_EXIT("fopen in_file failure!");
+        }
+        if (dup2(fileno(in_file), STDIN_FILENO) == -1) {
+            STREAM_ERR_EXIT("dup2 in_file failure!");
+        }
+    }
+
+    /* redirect stdout to out_file */
+    if (_config->out_file_name != NULL) {
+        FILE *out_file;
+        if ((out_file = fopen(_config->out_file_name, "w")) == NULL) {
+            STREAM_ERR_EXIT("fopen out_file failure!");
+        }
+        if (dup2(fileno(out_file), STDOUT_FILENO) == -1) {
+            STREAM_ERR_EXIT("dup2 out_file failure!");
+        }
+    }
+
+    /* redirect stderr to err_file */
+    if (_config->err_file_name != NULL) {
+        FILE *err_file;
+        if ((err_file = fopen(_config->err_file_name, "w")) == NULL) {
+            STREAM_ERR_EXIT("fopen err_file failure!");
+        }
+        if (dup2(fileno(err_file), STDERR_FILENO) == -1) {
+            STREAM_ERR_EXIT("dup2 err_file failure!");
+        }
+    }
+}

@@ -15,6 +15,7 @@ void init_result(struct result *_result) {
 void run(const struct config *_config, struct result *_result) {
     init_result(_result);
     set_limit(_config);
+    set_stream(_config);
 
     struct timeval start, end;
     /* Start recording time */
