@@ -1,14 +1,23 @@
 # coding=utf-8
 import os
+import re
 import json
 import subprocess
+
+
+def get_int_form_str(string):
+    try:
+        integer = int(re.sub("\D", "", string))
+    except:
+        integer = 0
+    return integer
 
 
 class Plunge(object):
 
     def __init__(self, run_file_name, in_file_name=None, out_file_name=None, err_file_name=None,
                  max_cpu_time=None, max_real_time=None, max_memory=None, uid=None, gid=None, args=None,
-                 max_stack=None, max_output_size=None, show=None):
+                 max_stack=None, max_output_size=None):
         if not os.path.exists("../src/plunge"):
             print("Please make first")
             exit(1)
@@ -37,52 +46,36 @@ class Plunge(object):
             cmd.append('--max_stack={max_stack}'.format(max_stack=max_stack))
         if max_output_size:
             cmd.append('--max_output_size={max_output_size}'.format(max_output_size=max_output_size))
-        if show:
-            cmd.append('--show')
+        cmd.append('--show')
+
         self.cmd = cmd
-        self.show = show
         self.parser_data = {}
+        self.out = ''
+        self.err = ''
 
     def run(self):
-        proc = subprocess.Popen(self.cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = proc.communicate()
+        pro = subprocess.Popen(self.cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = pro.communicate()
         self.out = bytes.decode(out)
         self.err = bytes.decode(err).strip()
-        self.parser_err()
+        self.parser()
 
-    def parser_err(self):
-        if not self.show:
-            err_data = self.err.split('\n')
-            self.parser_data['cpu_time'] = int(err_data[0][11:-3])
-            self.parser_data['real_time'] = int(err_data[1][11:-3])
-            self.parser_data['memory'] = int(err_data[2][11:-5])
-            self.parser_data['exit_code'] = int(err_data[3][11:])
-            self.parser_data['signal'] = int(err_data[4][11:])
-            self.parser_data['status'] = int(err_data[5][11:])
-        else:
-            err_data = self.err.split('\n')
-            self.parser_data['run_file_name'] = err_data[0][17:]
-            self.parser_data['args'] = err_data[1][17:]
-            self.parser_data['in_file_name'] = err_data[2][17:]
-            self.parser_data['out_file_name'] = err_data[3][17:]
-            self.parser_data['err_file_name'] = err_data[4][17:]
-            self.parser_data['max_cpu_time'] = int(err_data[5][17:-3])
-            self.parser_data['max_real_time'] = int(err_data[6][17:-3])
-            self.parser_data['max_memory'] = int(err_data[7][17:-5])
-            self.parser_data['max_stack'] = int(err_data[8][17:-5])
-            self.parser_data['max_output_size'] = int(err_data[9][17:-5])
-            self.parser_data['gid'] = int(err_data[10][17:])
-            self.parser_data['uid'] = int(err_data[11][17:])
-
-            self.parser_data['cpu_time'] = int(err_data[13][11:-3])
-            self.parser_data['real_time'] = int(err_data[14][11:-3])
-            self.parser_data['memory'] = int(err_data[15][11:-5])
-            self.parser_data['exit_code'] = int(err_data[16][11:])
-            self.parser_data['signal'] = int(err_data[17][11:])
-            self.parser_data['status'] = int(err_data[18][11:])
+    def parser(self):
+        int_field = ['cpu_time', 'real_time', 'memory', 'exit_code', 'signal', 'status', 'max_cpu_time',
+                     'max_real_time',
+                     'max_memory', 'max_stack', 'max_output_size', 'gid', 'uid']
+        str_field = ['run_file_name', 'in_file_name', 'out_file_name', 'args', 'err_file_name']
+        data = self.err.split('\n')
+        for line in data:
+            field = line.split(':')[0]
+            if field in int_field:
+                self.parser_data[field] = get_int_form_str(line)
+            elif field in str_field:
+                string = line[len(field) + 1:].strip()
+                self.parser_data[field] = string
 
 
 if __name__ == '__main__':
-    p = Plunge('ls', args=['-l', '.'], show=True)
+    p = Plunge('ls', args=['-l', '.'])
     p.run()
     print(json.dumps(p.parser_data, ensure_ascii=False, indent=4))
