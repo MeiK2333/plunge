@@ -27,11 +27,11 @@ Options:
   -e, --err_file_name      string      Redirect the program's standard error stream to this file
   -t, --max_cpu_time       integer     Maximum CPU time available for program execution (ms)
   -T, --max_real_time      integer     Maximum real time available for program operation (ms)
-  -m, --max_memory         integer     Maximum memory available for program execution (byte)
+  -m, --max_memory         integer     Maximum memory available for program execution (kb)
   -u, --uid                integer     User id when the program runs
   -g, --gid                integer     Group id when the program runs
   -a, --args               string      Program running arguments, Can be set multiple times
-      --max_stack          integer     Maximum stack space available for program execution (byte)
+      --max_stack          integer     Maximum stack space available for program execution (kb)
       --max_output_size    integer     The maximum file size a program can create (byte)
       --show                           Print specific restrictions
 
@@ -50,7 +50,7 @@ total 96
 
 cpu_time:  2 ms
 real_time: 3 ms
-memory:    3300 byte
+memory:    3300 kb
 exit_code: 0
 signal:    0
 status:    0

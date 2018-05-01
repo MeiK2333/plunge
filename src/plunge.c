@@ -168,11 +168,11 @@ void display_usage() {
             "  -e, --err_file_name      string      Redirect the program's standard error stream to this file\n"
             "  -t, --max_cpu_time       integer     Maximum CPU time available for program execution (ms)\n"
             "  -T, --max_real_time      integer     Maximum real time available for program operation (ms)\n"
-            "  -m, --max_memory         integer     Maximum memory available for program execution (byte)\n"
+            "  -m, --max_memory         integer     Maximum memory available for program execution (kb)\n"
             "  -u, --uid                integer     User id when the program runs\n"
             "  -g, --gid                integer     Group id when the program runs\n"
             "  -a, --args               string      Program running arguments, Can be set multiple times\n"
-            "      --max_stack          integer     Maximum stack space available for program execution (byte)\n"
+            "      --max_stack          integer     Maximum stack space available for program execution (kb)\n"
             "      --max_output_size    integer     The maximum file size a program can create (byte)\n"
             "      --show                           Print specific restrictions\n"
             "\n";
@@ -194,8 +194,8 @@ void display_config(const struct config *_config) {
     fprintf(stderr, "err_file_name:   %s\n", _config->err_file_name);
     fprintf(stderr, "max_cpu_time:    %ld ms\n", _config->max_cpu_time);
     fprintf(stderr, "max_real_time:   %ld ms\n", _config->max_real_time);
-    fprintf(stderr, "max_memory:      %ld byte\n", _config->max_memory);
-    fprintf(stderr, "max_stack:       %ld byte\n", _config->max_stack);
+    fprintf(stderr, "max_memory:      %ld kb\n", _config->max_memory);
+    fprintf(stderr, "max_stack:       %ld kb\n", _config->max_stack);
     fprintf(stderr, "max_output_size: %ld byte\n", _config->max_output_size);
     fprintf(stderr, "gid:             %u\n", _config->gid);
     fprintf(stderr, "uid:             %u\n", _config->uid);
@@ -205,7 +205,7 @@ void display_result(const struct result *_result) {
     fprintf(stderr, "\n");
     fprintf(stderr, "cpu_time:  %ld ms\n", _result->cpu_time);
     fprintf(stderr, "real_time: %ld ms\n", _result->real_time);
-    fprintf(stderr, "memory:    %ld byte\n", _result->memory);
+    fprintf(stderr, "memory:    %ld kb\n", _result->memory);
     fprintf(stderr, "exit_code: %d\n", _result->exit_code);
     fprintf(stderr, "signal:    %d\n", _result->signal);
     fprintf(stderr, "status:    %d\n", _result->status);
