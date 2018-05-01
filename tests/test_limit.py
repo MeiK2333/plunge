@@ -28,6 +28,13 @@ class TestLimit(unittest.TestCase):
         p.run()
         self.assertEqual(p.parser_data['signal'], 25)
 
+    def test_stack_limit(self):
+        run_file_name = './stack_limit_out.out'
+        max_stack = 10000
+        p = Plunge(run_file_name=run_file_name, max_stack=max_stack)
+        p.run()
+        self.assertEqual(p.parser_data['signal'], 11)
+
 
 if __name__ == '__main__':
     unittest.main()
