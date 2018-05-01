@@ -14,8 +14,6 @@ void init_result(struct result *_result) {
 
 void run(const struct config *_config, struct result *_result) {
     init_result(_result);
-    set_limit(_config);
-    set_stream(_config);
 
     struct timeval start, end;
     /* Start recording time */
@@ -28,14 +26,11 @@ void run(const struct config *_config, struct result *_result) {
     } else if (pid == 0) {
         /* set limit */
         set_limit(_config);
+        /* set stream redirect */
+        set_stream(_config);
         execvp(_config->run_file_name, _config->args);
         RUN_ERR_EXIT("exec failure!");
     } else if (pid > 0) {
-        /* Block the SIGALRM signal to prevent the parent process from being interrupted by the timer */
-        sigset_t set;
-        sigemptyset(&set);
-        sigaddset(&set, SIGALRM);
-        sigprocmask(SIG_SETMASK, &set, NULL);
 
         if (wait4(pid, &_result->status, WSTOPPED, &_result->_rusage) == -1) {
             RUN_ERR_EXIT("wait4 failure!");
