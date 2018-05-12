@@ -18,6 +18,7 @@ struct config {
     long max_memory;
     long max_stack;
     long max_output_size;
+    long max_process;
     uid_t uid;
     gid_t gid;
 

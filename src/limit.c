@@ -49,6 +49,14 @@ void set_limit(const struct config *_config) {
         }
     }
 
+    /* set max process limit */
+    if (_config->max_process != UNLIMITED) {
+        rl.rlim_cur = rl.rlim_max = (rlim_t) _config->max_process;
+        if (setrlimit(RLIMIT_NPROC, &rl) != 0) {
+            LIMIT_ERR_EXIT("setrlimit RLIMIT_NPROC failure!");
+        }
+    }
+
     /* set gid */
     if (_config->gid != UNLIMITED) {
         if (setgid(_config->gid) == -1) {

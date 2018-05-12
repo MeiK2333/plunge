@@ -18,6 +18,7 @@ static const struct option long_opts[] = {
         {"args",            required_argument, NULL, 'a'},
         {"max_stack",       required_argument, NULL, 0},
         {"max_output_size", required_argument, NULL, 0},
+        {"max_process",     required_argument, NULL, 0},
         {"show",            no_argument,       NULL, 0},
         {NULL,              no_argument,       NULL, 0}
 };
@@ -62,6 +63,7 @@ int main(int argc, char *argv[]) {
 
     struct config _config;
     _config.max_cpu_time = _config.max_real_time = _config.max_memory = _config.max_output_size = _config.max_stack = UNLIMITED;
+    _config.max_process = UNLIMITED;
     _config.uid = _config.gid = UNLIMITED;
     _config.memory_limit = _config.show = UNLIMITED;
     _config.args[0] = NULL;
@@ -119,6 +121,9 @@ int main(int argc, char *argv[]) {
                 } else if (strcmp("max_output_size", long_opts[long_index].name) == 0) {
                     _config.max_output_size = strtol(optarg, &str_to, 10);
                     assert_str_to(str_to);
+                } else if (strcmp("max_process", long_opts[long_index].name) == 0) {
+                    _config.max_process = strtol(optarg, &str_to, 10);
+                    assert_str_to(str_to);
                 } else if (strcmp("show", long_opts[long_index].name) == 0) {
                     _config.show = 1;
                 }
@@ -174,6 +179,7 @@ void display_usage() {
             "  -a, --args               string      Program running arguments, Can be set multiple times\n"
             "      --max_stack          integer     Maximum stack space available for program execution (byte)\n"
             "      --max_output_size    integer     The maximum file size a program can create (byte)\n"
+            "      --max_process        integer     The maximum number of processes that can be created\n"
             "      --show                           Print specific restrictions\n"
             "\n";
     fprintf(stderr, "%s", usage);
@@ -197,6 +203,7 @@ void display_config(const struct config *_config) {
     fprintf(stderr, "max_memory:      %ld byte\n", _config->max_memory);
     fprintf(stderr, "max_stack:       %ld byte\n", _config->max_stack);
     fprintf(stderr, "max_output_size: %ld byte\n", _config->max_output_size);
+    fprintf(stderr, "max_process:     %ld\n", _config->max_process);
     fprintf(stderr, "gid:             %u\n", _config->gid);
     fprintf(stderr, "uid:             %u\n", _config->uid);
 }
