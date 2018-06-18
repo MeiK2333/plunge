@@ -70,6 +70,13 @@ void set_limit(const struct config *_config) {
             LIMIT_ERR_EXIT("setuid failure!");
         }
     }
+
+    /* chroot */
+    if (_config->chroot != NULL) {
+        if (chroot(_config->chroot) == -1) {
+            LIMIT_ERR_EXIT("chroot failure!");
+        }
+    }
 }
 
 void set_stream(const struct config *_config) {

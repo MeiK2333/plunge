@@ -19,6 +19,7 @@ static const struct option long_opts[] = {
         {"max_stack",       required_argument, NULL, 0},
         {"max_output_size", required_argument, NULL, 0},
         {"max_process",     required_argument, NULL, 0},
+        {"chroot",          required_argument, NULL, 0},
         {"show",            no_argument,       NULL, 0},
         {NULL,              no_argument,       NULL, 0}
 };
@@ -68,6 +69,7 @@ int main(int argc, char *argv[]) {
     _config.memory_limit = _config.show = UNLIMITED;
     _config.args[0] = NULL;
     _config.run_file_name = _config.in_file_name = _config.out_file_name = _config.err_file_name = NULL;
+    _config.chroot = NULL;
 
     /* Parse command parameters */
     while ((opt = getopt_long(argc, argv, opt_string, long_opts, &long_index)) != -1) {
@@ -124,6 +126,8 @@ int main(int argc, char *argv[]) {
                 } else if (strcmp("max_process", long_opts[long_index].name) == 0) {
                     _config.max_process = strtol(optarg, &str_to, 10);
                     assert_str_to(str_to);
+                } else if (strcmp("chroot", long_opts[long_index].name) == 0) {
+                    _config.chroot = optarg;
                 } else if (strcmp("show", long_opts[long_index].name) == 0) {
                     _config.show = 1;
                 }
@@ -181,6 +185,7 @@ void display_usage() {
             "      --max_output_size    integer     The maximum file size a program can create (byte)\n"
             "      --max_process        integer     The maximum number of processes that can be created\n"
             "      --show                           Print specific restrictions\n"
+            "      --chroot             string      Change the root directory of the program, you need root privileges\n"
             "\n";
     fprintf(stderr, "%s", usage);
     exit(EXIT_FAILURE);
@@ -204,6 +209,7 @@ void display_config(const struct config *_config) {
     fprintf(stderr, "max_stack:       %ld byte\n", _config->max_stack);
     fprintf(stderr, "max_output_size: %ld byte\n", _config->max_output_size);
     fprintf(stderr, "max_process:     %ld\n", _config->max_process);
+    fprintf(stderr, "chroot:          %s\n", _config->chroot);
     fprintf(stderr, "gid:             %u\n", _config->gid);
     fprintf(stderr, "uid:             %u\n", _config->uid);
 }

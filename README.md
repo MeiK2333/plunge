@@ -33,7 +33,9 @@ Options:
   -a, --args               string      Program running arguments, Can be set multiple times
       --max_stack          integer     Maximum stack space available for program execution (byte)
       --max_output_size    integer     The maximum file size a program can create (byte)
+      --max_process        integer     The maximum number of processes that can be created
       --show                           Print specific restrictions
+      --chroot             string      Change the root directory of the program, you need root privileges
 
 ```
 
@@ -55,6 +57,3 @@ exit_code: 0
 signal:    0
 status:    0
 ```
-
-## TODO
-- chroot

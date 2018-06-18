@@ -30,6 +30,7 @@ struct config {
     char *in_file_name;
     char *out_file_name;
     char *err_file_name;
+    char *chroot;
 };
 
 struct result {
